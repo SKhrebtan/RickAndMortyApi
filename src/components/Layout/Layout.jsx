@@ -1,17 +1,17 @@
 import { Suspense } from "react";
-import { NavLink, Outlet } from "react-router-dom";
-
+import { Outlet } from "react-router-dom";
+import { Nav, List, StyledNavLink } from "./Layou.styled";
 export const Layout = () => {
     return (
         <div>
             <header>
-                 <nav> 
-            <ul>
-                <li><NavLink to="/">Home</NavLink></li>
-                        <li><NavLink to="/characters">Characters</NavLink></li>
-                        <li><NavLink to="/locations">Locations</NavLink></li>
-            </ul>
-            </nav>  
+                 <Nav> 
+            <List>
+                <li><StyledNavLink to="/">Home</StyledNavLink></li>
+                        <li><StyledNavLink to="/characters">Characters</StyledNavLink></li>
+                        <li><StyledNavLink to="/locations">Locations</StyledNavLink></li>
+            </List>
+            </Nav>  
             </header>
             
             <main>

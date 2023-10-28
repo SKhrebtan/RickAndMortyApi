@@ -1,5 +1,6 @@
 import { useState, useEffect,Suspense } from "react";
-import { Link,Outlet, NavLink } from "react-router-dom";
+import { Link, Outlet, NavLink } from "react-router-dom";
+import { StyledList, StyledLi, StyledMainDiv } from "./Characters.styled";
 import axios from "axios";
 
 async function FetchCharacters(page)  {
@@ -22,24 +23,25 @@ export const Characters = () => {
         })
     },[page])
     return (
-        <div>
+        <StyledMainDiv>
             <h2>Characters</h2>
-            <ul>
+            <StyledList>
                 {characters.map(({ id, name, image }) =>
-                    <Link to={`/characters/${id}`} key={id}>
-                    <li>
+                                        <StyledLi key={id}>
+                        <Link to={`/characters/${id}`} >
                         <p>{name}</p>
                         <img src={image} alt={name} />
-                    </li></Link>
+                        </Link>
+                    </StyledLi>
                     )}
-            </ul>
-            {!lastPage && <button type='button' onClick={() => setPage(page + 1)}>Load more</button>}
-            <>
+            </StyledList>
+            {!lastPage && <button className='more-btn' type='button' onClick={() => setPage(page + 1)}>Load more</button>}
+            <div className='suspense-div'>
             <NavLink to="search-character">Search</NavLink>
                  <Suspense fallback="isLoading">
                  <Outlet/>
-                </Suspense></>
+                </Suspense></div>
              
-        </div>
+        </StyledMainDiv>
     )
 }

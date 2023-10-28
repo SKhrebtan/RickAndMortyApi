@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { StyledList, StyledLink } from "./Locations.styled";
 import axios from "axios";
 
 async function FetchLocations()  {
@@ -16,16 +16,18 @@ export const Locations = () => {
     return (
         <div>
             <h2>Locations</h2>
-            <ul>
+            <StyledList>
                 {locations && locations.map(({ id, name, type,dimension }) =>
-                    <Link to={`/locations/${id}`} key={id}>
+                    
                     <li key={id}>
+                        <StyledLink to={`/locations/${id}`}>
                         <p>Name: {name}</p>
                             <p>Type: {type}</p>
                             <p>Dimension: {dimension}</p>
-                    </li></Link>
+                            </StyledLink>
+                    </li>
                     )}
-            </ul>
+            </StyledList>
         </div>
     )
 }
