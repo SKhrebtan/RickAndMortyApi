@@ -20,13 +20,14 @@ export const LocationDetail = () => {
                     <h2>{location.name}</h2>
             <p>{location.type}</p>
                 <p>{location.dimension}</p>
-                 <NavLink to="residents">Residents</NavLink>
+                                 </>
+            }
+            <NavLink to="residents">Residents</NavLink>
                  <Suspense fallback="isLoading">
                  <Outlet/>
                 </Suspense>
-                </>
             
-            }
+            
         </div>
     )
 }

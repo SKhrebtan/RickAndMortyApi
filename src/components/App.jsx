@@ -6,13 +6,15 @@ import { CharacterDetail } from "./CharacterDetail/CharacterDetail";
 import { Locations } from "./Locations/Locations";
 import { LocationDetail } from "./LocationDetail/LocationDetail";
 import { Residents } from "./Residents/Residents";
-
+import { SearchCharacter } from "./SearchCharacter/SearchCharacter";
 export const App = () => {
   return (
    <Routes>
         <Route path="/" element={<Layout/>}>
               <Route index element={<Home/>} />
-              <Route path="characters" element={<Characters />} />
+        <Route path="characters" element={<Characters />}>
+          <Route path="search-character" element={<SearchCharacter/>}/>
+        </Route>
                <Route path="characters/:characterId/" element={<CharacterDetail />} /> 
                     <Route path="locations" element={<Locations />}/>                     
         <Route path="locations/:locationId/" element={<LocationDetail />}>
