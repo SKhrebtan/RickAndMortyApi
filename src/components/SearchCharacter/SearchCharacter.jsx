@@ -36,10 +36,10 @@ export const SearchCharacter = () => {
             if (info.pages === Number(currentPage)) {
                 setShowBtn(false)
             }
-            setCharacters(prevResults => currentPage === 1 ? results : [...prevResults, ...results])
+                setCharacters(prevResults => currentPage === '1' ? results : [...prevResults, ...results])
         })
     }, [query, currentPage])
-    console.log(showBtn)
+    
     return (
         <StyledMainDiv>
             <h3>Search character</h3>
@@ -52,7 +52,7 @@ export const SearchCharacter = () => {
             {characters && <StyledList>
                 {characters.map(({ id, name, image }) =>
                     <StyledLink key={id} to={`/characters/${id}/`} state={{ from: location }}>
-                      <li>
+                      <li key={id}>
                                                 <p>{name}</p>
                             <img src={image} alt={name} />
                                                     </li>
