@@ -20,6 +20,7 @@ export const App = () => {
         <Route path="locations/:locationId/" element={<LocationDetail />}>
         <Route path="residents" element={<Residents/>} />
         </Route>
+        <Route path="search" element={<SearchCharacter />} /> 
           </Route>
           </Routes>
   );

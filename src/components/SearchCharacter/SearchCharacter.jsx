@@ -1,28 +1,47 @@
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams,  useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { StyledMainDiv,StyledList,StyledLink } from "./SearchCharacter.styled";
 
 import axios from "axios";
 
-async function FetchByName(name)  {
-    const { data } = await axios.get(`https://rickandmortyapi.com/api/character/?name=${name}`);
+async function FetchByName(name,page)  {
+    const { data } = await axios.get(`https://rickandmortyapi.com/api/character/?name=${name}&page=${page}`);
     return data
 }
 export const SearchCharacter = () => {
+    const location = useLocation();
     const [searchParams, setSearchParams] = useSearchParams();
-    const [characters, setCharacters] = useState(null);
+    const [characters, setCharacters] = useState([]);
+    const [showBtn, setShowBtn] = useState(false);
     const query = searchParams.get('query');
+    const currentPage = searchParams.get('page');
+   
     const handleSubmit = e => {
         e.preventDefault();
-        setSearchParams({ query: e.currentTarget.elements.searchValue.value });
+        setSearchParams({
+            query: e.currentTarget.elements.searchValue.value,
+            page: 1,
+        });
         e.target.reset();
     }
 
     useEffect(() => {
         if (!query) return;
-        FetchByName(query).then(({results})=>setCharacters(results))
-    },[query])
+        FetchByName(query,currentPage).then(({ results,info }) => {
+                      if (info.pages > 1) {
+                setShowBtn(true)
+            }
+            console.log(info.pages)
+             console.log(currentPage)
+            if (info.pages === Number(currentPage)) {
+                setShowBtn(false)
+            }
+            setCharacters(prevResults => currentPage === 1 ? results : [...prevResults, ...results])
+        })
+    }, [query, currentPage])
+    console.log(showBtn)
     return (
-        <>
+        <StyledMainDiv>
             <h3>Search character</h3>
              <form onSubmit={handleSubmit}>
             <label>
@@ -30,17 +49,21 @@ export const SearchCharacter = () => {
             </label>
             <button type="submit">Search</button>
             </form>
-            {characters && <ul>
+            {characters && <StyledList>
                 {characters.map(({ id, name, image }) =>
-                    <Link to={ `/characters/${id}/`} key={id}>
-                        <li key={id}>
-                            <p>{name}</p>
-                            <img src={image} alt={name}/>
-                    </li>
-                    </Link>
+                    <StyledLink key={id} to={`/characters/${id}/`} state={{ from: location }}>
+                      <li>
+                                                <p>{name}</p>
+                            <img src={image} alt={name} />
+                                                    </li>
+                        </StyledLink>
+             
                     )}
-            </ul>}
-        </>
+            </StyledList>}
+            {showBtn && <button className='show-btn' type='button' onClick={() => {
+                                setSearchParams({ query, page: Number(currentPage) + 1 });
+            }}>Load more</button>}
+        </StyledMainDiv>
        
     )
 }

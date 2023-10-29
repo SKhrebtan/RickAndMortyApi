@@ -10,6 +10,7 @@ export const Layout = () => {
                 <li><StyledNavLink to="/">Home</StyledNavLink></li>
                         <li><StyledNavLink to="/characters">Characters</StyledNavLink></li>
                         <li><StyledNavLink to="/locations">Locations</StyledNavLink></li>
+                        <li><StyledNavLink to="/search">Search</StyledNavLink></li>
             </List>
             </Nav>  
             </header>
