@@ -13,33 +13,36 @@ export const SearchCharacter = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [characters, setCharacters] = useState([]);
     const [showBtn, setShowBtn] = useState(false);
+    const [page, setPage] = useState(1);
     const query = searchParams.get('query');
-    const currentPage = searchParams.get('page');
-   
     const handleSubmit = e => {
         e.preventDefault();
         setSearchParams({
             query: e.currentTarget.elements.searchValue.value,
-            page: 1,
+            page
         });
+        setPage(1);
         e.target.reset();
     }
 
     useEffect(() => {
         if (!query) return;
-        FetchByName(query,currentPage).then(({ results,info }) => {
+         FetchByName(query,page).then(({ results,info }) => {
                       if (info.pages > 1) {
                 setShowBtn(true)
             }
-            console.log(info.pages)
-             console.log(currentPage)
-            if (info.pages === Number(currentPage)) {
+           
+            if (info.pages === page) {
                 setShowBtn(false)
             }
-                setCharacters(prevResults => currentPage === '1' ? results : [...prevResults, ...results])
+            setCharacters(prevResults => {
+            
+                return page === 1 ? results : [...prevResults, ...results]
+            })
         })
-    }, [query, currentPage])
     
+    }, [query, page,setSearchParams])
+   
     return (
         <StyledMainDiv>
             <h3>Search character</h3>
@@ -60,9 +63,7 @@ export const SearchCharacter = () => {
              
                     )}
             </StyledList>}
-            {showBtn && <button className='show-btn' type='button' onClick={() => {
-                                setSearchParams({ query, page: Number(currentPage) + 1 });
-            }}>Load more</button>}
+            {showBtn && <button className='show-btn' type='button' onClick={() => setPage(page + 1) }>Load more</button>}
         </StyledMainDiv>
        
     )
