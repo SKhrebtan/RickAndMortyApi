@@ -1,8 +1,14 @@
 import styled from 'styled-components';
 
 export const StyledList = styled.ol`
-// list-style:none;
 display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 30px;
+gap: 20px;
+grid-template-columns: 40% 40%;
+padding-left: 40px;
+@media screen and (min-width: 768px){
+    grid-template-columns: 30% 30% 30%;
+}
+@media screen and (min-width: 1368px){
+    grid-template-columns: 22% 22% 22% 22%;
+}
 `

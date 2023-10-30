@@ -41,7 +41,7 @@ export const SearchCharacter = () => {
                 return page === 1 ? results : [...prevResults, ...results]
             })
         })
-    })
+    },[page, query])
     return (
         <StyledMainDiv>
             <h3>Search character</h3>

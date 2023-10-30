@@ -3,6 +3,6 @@ import thunk from 'redux-thunk';
 import { charactersSlice } from './dataSlice';
 export const store = configureStore({
     reducer: {
-        characters: charactersSlice.reducer,
+        api: charactersSlice.reducer,
             },
    }, applyMiddleware(thunk))

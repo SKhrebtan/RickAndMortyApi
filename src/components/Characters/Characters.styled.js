@@ -2,7 +2,14 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 export const StyledLink = styled(Link)`
-width: calc((100% - 80px) / 5)`
+width: calc((100% - 20px) / 2);
+@media screen and (min-width: 768px){
+    width: calc((100% - 40px) / 3)
+}
+@media screen and (min-width: 1368px){
+   width: calc((100% - 80px) / 5)
+}
+`
 export const StyledMainDiv = styled.div`
 padding: 20px;
 

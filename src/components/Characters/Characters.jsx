@@ -3,15 +3,13 @@ import { Outlet, NavLink } from "react-router-dom";
 import { StyledList, StyledLi, StyledMainDiv,StyledLink } from "./Characters.styled";
 import { getCharactesThunk } from "components/redux/dataSlice";
 import { useSelector, useDispatch } from "react-redux";
-
+import { CirclesWithBar } from 'react-loader-spinner';
 
 export const Characters = () => {
     const [page, setPage] = useState(1);
     
-    const  { items, isLoading, error } = useSelector(state => state.characters);
-    console.log(items)
-    console.log(isLoading)
-    console.log(error)
+    const  { characters, isLoading, error } = useSelector(state => state.api);
+    
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getCharactesThunk(page))
@@ -19,8 +17,21 @@ export const Characters = () => {
     return (
         <StyledMainDiv>
             <h2>Characters</h2>
+              {error && <h3>Something went wrong!</h3>}
+            {isLoading && <CirclesWithBar
+  height="100"
+  width="100"
+  color="#4fa94d"
+  wrapperStyle={{}}
+  wrapperClass=""
+  visible={true}
+  outerCircleColor=""
+  innerCircleColor=""
+  barColor=""
+  ariaLabel='circles-with-bar-loading'
+/>}
             <StyledList>
-                {items.map(({ id, name, image }) =>
+                {characters.map(({ id, name, image }) =>
                     <StyledLink key={id} to={`/characters/${id}`} >
                                         <StyledLi >
                                                 <p>{name}</p>
@@ -29,7 +40,7 @@ export const Characters = () => {
                          </StyledLink>
                     )}
             </StyledList>
-            <button className='more-btn' type='button' onClick={() => setPage(page + 1)}>Load more</button>
+            {!error && <button className='more-btn' type='button' onClick={() => setPage(page + 1)}>Load more</button>}
             <div className='suspense-div'>
             <NavLink to="search-character">Search</NavLink>
                  <Suspense fallback="isLoading">
