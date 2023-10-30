@@ -1,5 +1,8 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
+export const StyledLink = styled(Link)`
+width: calc((100% - 80px) / 5)`
 export const StyledMainDiv = styled.div`
 padding: 20px;
 
@@ -27,5 +30,5 @@ gap: 20px;
 `
 
 export const StyledLi = styled.li`
-width: calc((100% - 80px) / 5);
+;
 `

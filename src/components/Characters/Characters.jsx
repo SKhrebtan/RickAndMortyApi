@@ -1,41 +1,35 @@
 import { useState, useEffect,Suspense } from "react";
-import { Link, Outlet, NavLink } from "react-router-dom";
-import { StyledList, StyledLi, StyledMainDiv } from "./Characters.styled";
-import axios from "axios";
-
-async function FetchCharacters(page)  {
-    const { data } = await axios.get(`https://rickandmortyapi.com/api/character/?page=${page}`);
-    return data
-}
+import { Outlet, NavLink } from "react-router-dom";
+import { StyledList, StyledLi, StyledMainDiv,StyledLink } from "./Characters.styled";
+import { getCharactesThunk } from "components/redux/dataSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 
 export const Characters = () => {
-    const [characters, setCharacters] = useState([]);
     const [page, setPage] = useState(1);
-    const [lastPage, setLastPage] = useState(null);
-
+    
+    const  { items, isLoading, error } = useSelector(state => state.characters);
+    console.log(items)
+    console.log(isLoading)
+    console.log(error)
+    const dispatch = useDispatch();
     useEffect(() => {
-        FetchCharacters(page).then(({ results, info }) => {
-            setCharacters(prevCharacters => page === 1 ? results : [...prevCharacters, ...results]);
-            if (page === info.pages) {
-                 setLastPage(true)
-             }
-        })
-    },[page])
+        dispatch(getCharactesThunk(page))
+    },[dispatch, page])
     return (
         <StyledMainDiv>
             <h2>Characters</h2>
             <StyledList>
-                {characters.map(({ id, name, image }) =>
-                                        <StyledLi key={id}>
-                        <Link to={`/characters/${id}`} >
-                        <p>{name}</p>
+                {items.map(({ id, name, image }) =>
+                    <StyledLink key={id} to={`/characters/${id}`} >
+                                        <StyledLi >
+                                                <p>{name}</p>
                         <img src={image} alt={name} />
-                        </Link>
-                    </StyledLi>
+                                               </StyledLi>
+                         </StyledLink>
                     )}
             </StyledList>
-            {!lastPage && <button className='more-btn' type='button' onClick={() => setPage(page + 1)}>Load more</button>}
+            <button className='more-btn' type='button' onClick={() => setPage(page + 1)}>Load more</button>
             <div className='suspense-div'>
             <NavLink to="search-character">Search</NavLink>
                  <Suspense fallback="isLoading">
@@ -45,3 +39,12 @@ export const Characters = () => {
         </StyledMainDiv>
     )
 }
+
+    // useEffect(() => {
+    //     FetchCharacters(page).then(({ results, info }) => {
+    //         setCharacters(prevCharacters => page === 1 ? results : [...prevCharacters, ...results]);
+    //         if (page === info.pages) {
+    //              setLastPage(true)
+    //          }
+    //     })
+    // },[page])

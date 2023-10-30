@@ -15,6 +15,7 @@ export const SearchCharacter = () => {
     const [showBtn, setShowBtn] = useState(false);
     const [page, setPage] = useState(1);
     const query = searchParams.get('query');
+   
     const handleSubmit = e => {
         e.preventDefault();
         setSearchParams({
@@ -27,8 +28,8 @@ export const SearchCharacter = () => {
 
     useEffect(() => {
         if (!query) return;
-         FetchByName(query,page).then(({ results,info }) => {
-                      if (info.pages > 1) {
+        FetchByName(query, page).then(({ results, info }) => {
+            if (info.pages > 1) {
                 setShowBtn(true)
             }
            
@@ -40,9 +41,7 @@ export const SearchCharacter = () => {
                 return page === 1 ? results : [...prevResults, ...results]
             })
         })
-    
-    }, [query, page,setSearchParams])
-   
+    })
     return (
         <StyledMainDiv>
             <h3>Search character</h3>
