@@ -44,12 +44,28 @@ export const getLocationsThunk = createAsyncThunk(
   }
 )
 
+export const getSearchCharacterThunk = createAsyncThunk(
+     'search/searchCharacter',
+  async (info, thunkAPI) => {
+      
+        try {
+            const { data } = await axios.get(`/character/?name=${info.query}&page=${info.page}`);
+          const { page } = info;
+            return { data, page }
+
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+)
+
  export const charactersSlice = createSlice({
     name: 'api',
      initialState: {
        characters: [],
        episodes: [],
        locations: [],
+       searchCharacters: [],
     isLoading: false,
        error: null,
     showBtn: false,
@@ -106,6 +122,24 @@ export const getLocationsThunk = createAsyncThunk(
         state.locations = page === 1 ? data.results : [...state.locations, ...data.results];
     },
     [getLocationsThunk.rejected](state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+     },
+     [getSearchCharacterThunk.pending](state) {
+      state.isLoading = true;
+    state.error = null;
+    },
+     [getSearchCharacterThunk.fulfilled](state, { payload: { data, page } }) {
+              if (data.info.pages > 1) {
+         state.showBtn = true
+       } else { state.showBtn = false }
+       if (data.info.pages === page) {
+         state.showBtn = false
+       }
+        state.isLoading = false;
+        state.searchCharacters = page === 1 ? data.results : [...state.searchCharacters, ...data.results];
+    },
+    [getSearchCharacterThunk.rejected](state, action) {
       state.isLoading = false;
       state.error = action.payload;
        },
