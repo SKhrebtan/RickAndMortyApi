@@ -4,7 +4,7 @@ import { StyledList } from "./Home.styled";
 import { getEpisodesThunk } from "components/redux/dataSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { CirclesWithBar } from 'react-loader-spinner';
-
+import { ShowMoreBtn } from "components/ShowMoreBtn/ShowMoreBtn";
 
 export const Home = () => {
     const [page, setPage] = useState(1);
@@ -37,7 +37,7 @@ export const Home = () => {
                         <p>{air_date}</p>
                     </li>)}
             </StyledList>
-            {showBtn && !error && <button type='button' onClick={() => setPage(page + 1)}>Load more</button>}
+            {showBtn && !error && <ShowMoreBtn type='button' onClick={() => setPage(page + 1)}/>}
         </div>
     )
 }

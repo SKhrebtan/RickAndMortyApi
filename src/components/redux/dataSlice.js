@@ -66,16 +66,27 @@ export const getSearchCharacterThunk = createAsyncThunk(
        episodes: [],
        locations: [],
        searchCharacters: [],
+       characterSearchParams: null,
     isLoading: false,
        error: null,
     showBtn: false,
-  },
-   extraReducers: {
-    [getCharactesThunk.pending](state) {
-      state.isLoading = true;
+   },
+   reducers: {
+     addLocation(state, { payload }) {
+      
+            state.characterSearchParams = payload
+     },
+     clearCharacters(state, _) {
+       
+            state.characters = []
+     },
+     },
+   extraReducers: builder =>
+     builder.addCase(getCharactesThunk.pending, state => {
+            state.isLoading = true;
     state.error = null;
-    },
-     [getCharactesThunk.fulfilled](state, {payload:{data,page}}) {
+     })
+       .addCase(getCharactesThunk.fulfilled, (state, { payload: { data, page } }) => {
       if (data.info.pages > 1) {
          state.showBtn = true
        } else { state.showBtn = false }
@@ -84,17 +95,17 @@ export const getSearchCharacterThunk = createAsyncThunk(
        }
         state.isLoading = false;
         state.characters = page === 1 ? data.results : [...state.characters, ...data.results];
-    },
-    [getCharactesThunk.rejected](state, action) {
+       })
+   .addCase(getCharactesThunk.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
-     },
-      [getEpisodesThunk.pending](state) {
-      state.isLoading = true;
+   })
+   .addCase(getEpisodesThunk.pending, state => {
+            state.isLoading = true;
     state.error = null;
-    },
-     [getEpisodesThunk.fulfilled](state, { payload: {data, page} }) {
-       if (data.info.pages > 1) {
+     })
+       .addCase(getEpisodesThunk.fulfilled, (state, { payload: { data, page } }) => {
+      if (data.info.pages > 1) {
          state.showBtn = true
        } else { state.showBtn = false }
        if (data.info.pages === page) {
@@ -102,17 +113,17 @@ export const getSearchCharacterThunk = createAsyncThunk(
        }
         state.isLoading = false;
         state.episodes = page === 1 ? data.results : [...state.episodes, ...data.results];
-    },
-    [getEpisodesThunk.rejected](state, action) {
+       })
+   .addCase(getEpisodesThunk.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
-     },
-      [getLocationsThunk.pending](state) {
-      state.isLoading = true;
+   })
+   .addCase(getLocationsThunk.pending, state => {
+            state.isLoading = true;
     state.error = null;
-    },
-     [getLocationsThunk.fulfilled](state, { payload: {data, page} }) {
-       if (data.info.pages > 1) {
+     })
+       .addCase(getLocationsThunk.fulfilled, (state, { payload: { data, page } }) => {
+      if (data.info.pages > 1) {
          state.showBtn = true
        } else { state.showBtn = false }
        if (data.info.pages === page) {
@@ -120,28 +131,107 @@ export const getSearchCharacterThunk = createAsyncThunk(
        }
         state.isLoading = false;
         state.locations = page === 1 ? data.results : [...state.locations, ...data.results];
-    },
-    [getLocationsThunk.rejected](state, action) {
+       })
+   .addCase(getLocationsThunk.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
-     },
-     [getSearchCharacterThunk.pending](state) {
-      state.isLoading = true;
+   })
+   .addCase(getSearchCharacterThunk.pending, state => {
+            state.isLoading = true;
     state.error = null;
-    },
-     [getSearchCharacterThunk.fulfilled](state, { payload: { data, page } }) {
-              if (data.info.pages > 1) {
+     })
+       .addCase(getSearchCharacterThunk.fulfilled, (state, { payload: { data, page } }) => {
+         console.log(data.info.pages)
+         console.log(page)
+      if (data.info.pages > 1) {
          state.showBtn = true
        } else { state.showBtn = false }
        if (data.info.pages === page) {
          state.showBtn = false
        }
-        state.isLoading = false;
-        state.searchCharacters = page === 1 ? data.results : [...state.searchCharacters, ...data.results];
-    },
-    [getSearchCharacterThunk.rejected](state, action) {
+         state.isLoading = false;
+        
+         state.searchCharacters = page === 1 ? data.results : [...state.searchCharacters, ...data.results];
+       })
+   .addCase(getSearchCharacterThunk.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
-       },
-       },
-})
+     })
+ })
+
+export const { addLocation, clearCharacters } = charactersSlice.actions;
+
+  // extraReducers: {
+  //   [getCharactesThunk.pending](state) {
+  //     state.isLoading = true;
+  //   state.error = null;
+  //   },
+  //    [getCharactesThunk.fulfilled](state, {payload:{data,page}}) {
+  //     if (data.info.pages > 1) {
+  //        state.showBtn = true
+  //      } else { state.showBtn = false }
+  //      if (data.info.pages === page) {
+  //        state.showBtn = false
+  //      }
+  //       state.isLoading = false;
+  //       state.characters = page === 1 ? data.results : [...state.characters, ...data.results];
+  //   },
+  //   [getCharactesThunk.rejected](state, action) {
+  //     state.isLoading = false;
+  //     state.error = action.payload;
+  //    },
+  //     [getEpisodesThunk.pending](state) {
+  //     state.isLoading = true;
+  //   state.error = null;
+  //   },
+  //    [getEpisodesThunk.fulfilled](state, { payload: {data, page} }) {
+  //      if (data.info.pages > 1) {
+  //        state.showBtn = true
+  //      } else { state.showBtn = false }
+  //      if (data.info.pages === page) {
+  //        state.showBtn = false
+  //      }
+  //       state.isLoading = false;
+  //       state.episodes = page === 1 ? data.results : [...state.episodes, ...data.results];
+  //   },
+  //   [getEpisodesThunk.rejected](state, action) {
+  //     state.isLoading = false;
+  //     state.error = action.payload;
+  //    },
+  //     [getLocationsThunk.pending](state) {
+  //     state.isLoading = true;
+  //   state.error = null;
+  //   },
+  //    [getLocationsThunk.fulfilled](state, { payload: {data, page} }) {
+  //      if (data.info.pages > 1) {
+  //        state.showBtn = true
+  //      } else { state.showBtn = false }
+  //      if (data.info.pages === page) {
+  //        state.showBtn = false
+  //      }
+  //       state.isLoading = false;
+  //       state.locations = page === 1 ? data.results : [...state.locations, ...data.results];
+  //   },
+  //   [getLocationsThunk.rejected](state, action) {
+  //     state.isLoading = false;
+  //     state.error = action.payload;
+  //    },
+  //    [getSearchCharacterThunk.pending](state) {
+  //     state.isLoading = true;
+  //   state.error = null;
+  //   },
+  //    [getSearchCharacterThunk.fulfilled](state, { payload: { data, page } }) {
+  //             if (data.info.pages > 1) {
+  //        state.showBtn = true
+  //      } else { state.showBtn = false }
+  //      if (data.info.pages === page) {
+  //        state.showBtn = false
+  //      }
+  //       state.isLoading = false;
+  //       state.searchCharacters = page === 1 ? data.results : [...state.searchCharacters, ...data.results];
+  //   },
+  //   [getSearchCharacterThunk.rejected](state, action) {
+  //     state.isLoading = false;
+  //     state.error = action.payload;
+  //      },
+  //      },

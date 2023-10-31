@@ -3,7 +3,7 @@ import { StyledList, StyledLink } from "./Locations.styled";
 import { getLocationsThunk } from "components/redux/dataSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { CirclesWithBar } from 'react-loader-spinner';
-
+import { ShowMoreBtn } from "components/ShowMoreBtn/ShowMoreBtn";
 export const Locations = () => {
     const [page, setPage] = useState(1);
     const {locations, error, isLoading, showBtn} = useSelector(state=>state.api);
@@ -39,7 +39,8 @@ export const Locations = () => {
                     </li>
                     )}
             </StyledList>
-            {showBtn && !error && <button className='more-btn' type='button' onClick={() => setPage(page + 1)}>Load more</button>}
+            {showBtn && !error && <ShowMoreBtn type='button' onClick={() => setPage(page + 1)}/>}
+            {/* {showBtn && !error && <button className='more-btn' type='button' onClick={() => setPage(page + 1)}>Load more</button>} */}
         </div>
     )
 }

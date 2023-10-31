@@ -4,7 +4,7 @@ import { StyledList, StyledLi, StyledMainDiv,StyledLink } from "./Characters.sty
 import { getCharactesThunk } from "components/redux/dataSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { CirclesWithBar } from 'react-loader-spinner';
-
+import { ShowMoreBtn } from "components/ShowMoreBtn/ShowMoreBtn";
 export const Characters = () => {
     const [page, setPage] = useState(1);
     
@@ -40,7 +40,7 @@ export const Characters = () => {
                          </StyledLink>
                     )}
             </StyledList>
-            {!error && <button className='more-btn' type='button' onClick={() => setPage(page + 1)}>Load more</button>}
+            {!error && <ShowMoreBtn type='button' onClick={() => setPage(page + 1)}/>}
             <div className='suspense-div'>
             <NavLink to="search-character">Search</NavLink>
                  <Suspense fallback="isLoading">
