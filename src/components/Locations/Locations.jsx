@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { StyledList, StyledLink } from "./Locations.styled";
+import { StyledList, StyledLink,MainDiv } from "./Locations.styled";
 import { getLocationsThunk } from "components/redux/dataSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { CirclesWithBar } from 'react-loader-spinner';
@@ -12,7 +12,7 @@ export const Locations = () => {
         dispatch(getLocationsThunk(page))
     },[dispatch, page])
     return (
-        <div>
+        <MainDiv>
             <h2>Locations</h2>
               {error && <h3>Something went wrong!</h3>}
             {isLoading && <CirclesWithBar
@@ -20,7 +20,7 @@ export const Locations = () => {
   width="100"
   color="#4fa94d"
   wrapperStyle={{}}
-  wrapperClass=""
+  wrapperClass="loader"
   visible={true}
   outerCircleColor=""
   innerCircleColor=""
@@ -41,6 +41,6 @@ export const Locations = () => {
             </StyledList>
             {showBtn && !error && <ShowMoreBtn type='button' onClick={() => setPage(page + 1)}/>}
             {/* {showBtn && !error && <button className='more-btn' type='button' onClick={() => setPage(page + 1)}>Load more</button>} */}
-        </div>
+        </MainDiv>
     )
 }

@@ -26,12 +26,10 @@ align-items: center;
   transition: background-color 0.3s, color 0.3s;
 }
 
-/* Зміни стилю при наведенні */
 .input:hover {
   background-color: #f0f0f0;
 }
 
-/* Зміни стилю при фокусуванні */
 .input:focus {
   outline: none;
   border-color: #61de2a;
@@ -57,7 +55,9 @@ color: black;
 }
 }
 
-
+.loader {
+  margin: 30px auto;
+}
 .show-btn {
   display: inline-block;
   padding: 10px 20px;

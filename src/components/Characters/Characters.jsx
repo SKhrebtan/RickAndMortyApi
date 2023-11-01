@@ -23,7 +23,7 @@ export const Characters = () => {
   width="100"
   color="#4fa94d"
   wrapperStyle={{}}
-  wrapperClass=""
+  wrapperClass="loader"
   visible={true}
   outerCircleColor=""
   innerCircleColor=""

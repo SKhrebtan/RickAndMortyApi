@@ -78,7 +78,7 @@ export const getSearchCharacterThunk = createAsyncThunk(
      },
      clearCharacters(state, _) {
        
-            state.characters = []
+            state.searchCharacters = []
      },
      },
    extraReducers: builder =>
@@ -141,8 +141,7 @@ export const getSearchCharacterThunk = createAsyncThunk(
     state.error = null;
      })
        .addCase(getSearchCharacterThunk.fulfilled, (state, { payload: { data, page } }) => {
-         console.log(data.info.pages)
-         console.log(page)
+       
       if (data.info.pages > 1) {
          state.showBtn = true
        } else { state.showBtn = false }

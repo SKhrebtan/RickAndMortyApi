@@ -1,5 +1,13 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+
+export const MainDiv = styled.div`
+.loader {
+    display: flex;
+    justify-content:center;
+  margin: 30px auto;
+}
+`
 export const StyledList = styled.ol`
 display: grid;
 gap: 20px;

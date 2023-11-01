@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { StyledList } from "./Home.styled";
+import { StyledList,MainDiv } from "./Home.styled";
 import { getEpisodesThunk } from "components/redux/dataSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { CirclesWithBar } from 'react-loader-spinner';
@@ -14,7 +14,7 @@ export const Home = () => {
         dispatch(getEpisodesThunk(page))
     },[dispatch, page])
     return (
-        <div>
+        <MainDiv>
             <h2>Home</h2>
             {error && <h3>Something went wrong!</h3>}
             {isLoading && <CirclesWithBar
@@ -22,7 +22,7 @@ export const Home = () => {
   width="100"
   color="#4fa94d"
   wrapperStyle={{}}
-  wrapperClass=""
+  wrapperClass="loader"
   visible={true}
   outerCircleColor=""
   innerCircleColor=""
@@ -38,6 +38,6 @@ export const Home = () => {
                     </li>)}
             </StyledList>
             {showBtn && !error && <ShowMoreBtn type='button' onClick={() => setPage(page + 1)}/>}
-        </div>
+        </MainDiv>
     )
 }

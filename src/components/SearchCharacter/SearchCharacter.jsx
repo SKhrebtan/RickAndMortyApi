@@ -6,15 +6,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { CirclesWithBar } from 'react-loader-spinner';
 import { FcSearch } from 'react-icons/fc';
 import { ShowMoreBtn } from "components/ShowMoreBtn/ShowMoreBtn";
-import { addLocation } from "components/redux/dataSlice";
+import { clearCharacters } from "components/redux/dataSlice";
 export const SearchCharacter = () => {
     
     const [searchParams, setSearchParams] = useSearchParams();
-      const [page, setPage] = useState(1);
-        const query = searchParams.get('query');
-     const { searchCharacters, error, isLoading, showBtn, characterSearchParams } = useSelector(state => state.api);
-    const currentPage = searchParams.get('page');
-    
+    const [page, setPage] = useState(1);
+     const query = searchParams.get('query');
+     const { searchCharacters, error, isLoading, showBtn } = useSelector(state => state.api);
+    //  const currentPage = searchParams.get('page');
+
        const dispatch = useDispatch();
     const handleSubmit = e => {
         e.preventDefault();
@@ -23,22 +23,25 @@ export const SearchCharacter = () => {
             page
         });
         setPage(1);
-        dispatch(addLocation({page:1, query: e.currentTarget.elements.searchValue.value}))
+        // dispatch(addLocation({page:1, query: e.currentTarget.elements.searchValue.value}))
         
         e.target.reset();
     }
-    useEffect(() => {
-        if (characterSearchParams) {
+//     useEffect(() => {
+//         if (characterSearchParams) {
             
-            const { query, page } = characterSearchParams;
-             setSearchParams({
-            query,
-            page,
-        });
-        }
-},[characterSearchParams, setSearchParams])
+//             const { query, page } = characterSearchParams;
+//              setSearchParams({
+//             query,
+//             page,
+//         });
+//         }
+// },[characterSearchParams, setSearchParams])
     useEffect(() => {
-        if (!query) return;
+        if (!query) {
+           
+            dispatch(clearCharacters())
+            return;}
                      dispatch(getSearchCharacterThunk({ page, query }))
                        
     },[ dispatch, page, query])
@@ -56,7 +59,7 @@ export const SearchCharacter = () => {
   width="100"
   color="#4fa94d"
   wrapperStyle={{}}
-  wrapperClass=""
+  wrapperClass="loader"
   visible={true}
   outerCircleColor=""
   innerCircleColor=""
@@ -80,8 +83,8 @@ export const SearchCharacter = () => {
                 setPage(page + 1)
                 }}>Load more</button>} */}
             {showBtn && searchCharacters.length > 1 && !error &&<ShowMoreBtn type='button' onClick={() => {
-                dispatch(addLocation({page: Number(currentPage) + 1, query}))
-                setPage(Number(currentPage) + 1)
+                // dispatch(addLocation({page: Number(currentPage) + 1, query}))
+                setPage(page + 1)
                 }} />}
         </StyledMainDiv>
        

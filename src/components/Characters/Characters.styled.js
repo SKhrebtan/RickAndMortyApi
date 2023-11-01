@@ -12,7 +12,11 @@ width: calc((100% - 20px) / 2);
 `
 export const StyledMainDiv = styled.div`
 padding: 20px;
-
+.loader {
+    display: flex;
+    justify-content:center;
+  margin: 30px auto;
+}
 .suspense-div{
     display: flex;
      align-items: center;

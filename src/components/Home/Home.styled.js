@@ -1,5 +1,11 @@
 import styled from 'styled-components';
-
+export const MainDiv = styled.div`
+.loader {
+    display: flex;
+    justify-content:center;
+  margin: 30px auto;
+}
+`
 export const StyledList = styled.ol`
 display: grid;
 gap: 20px;
