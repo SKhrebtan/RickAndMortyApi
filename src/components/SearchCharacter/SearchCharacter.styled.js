@@ -7,6 +7,19 @@ flex-direction: column;
 align-items: center;
 .name {
   text-align: center;
+  margin:0;
+  height:42px;
+  display: flex;
+align-items: center;
+justify-content: center;
+transition: all 300ms linear;
+@media screen and (min-width:768px) {
+  font-size:20px;
+}
+@media screen and (min-width:1368px) {
+  font-size:24px;
+  height: 56px;
+}
 }
 .form {
     display: flex;
@@ -92,6 +105,8 @@ color: black;
 }
 .image {
     width: 100%;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    transition: box-shadow 0.3s ease;
 }
 
 `
@@ -142,4 +157,10 @@ width: 100%;
 .image {
     width: 100%;
 }
+&:hover .name {
+  color: #61de2a;
+}
+&:hover .image {
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+  }
 `

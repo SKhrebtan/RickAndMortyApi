@@ -6,8 +6,12 @@ text-decoration: none;
 width: 100%;
 .image{
   width: 100%;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    transition: box-shadow 0.3s ease;
 }
-}
+&:hover .image {
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+  }
 `
 export const StyledLinksBlock = styled.div`
 margin: 0 auto;
@@ -81,4 +85,21 @@ export const StyledName = styled.p`
 font-size:18px;
 color: black;
 text-align: center;
+margin: 0;
+height: 46px;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: all 300ms linear;
+
+@media screen and (min-width:768px) {
+  font-size:20px;
+}
+@media screen and (min-width:1368px) {
+  font-size:24px;
+  height: 56px;
+}
+${StyledLink}:hover & {
+  color: #61de2a;
+}
 `
