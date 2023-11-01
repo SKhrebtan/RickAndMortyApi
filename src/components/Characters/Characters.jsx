@@ -1,16 +1,20 @@
 import { useState, useEffect,Suspense } from "react";
-import { Outlet, NavLink } from "react-router-dom";
-import { StyledList, StyledLi, StyledMainDiv,StyledLink } from "./Characters.styled";
+import { Outlet } from "react-router-dom";
+import { StyledList, StyledLi, StyledMainDiv,StyledLink,StyledNavLink,StyledLinksBlock } from "./Characters.styled";
 import { getCharactesThunk } from "components/redux/dataSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { CirclesWithBar } from 'react-loader-spinner';
-import { ShowMoreBtn } from "components/ShowMoreBtn/ShowMoreBtn";
+import { ShowMoreBtn } from "components/Buttons/ShowMoreBtn";
+import { getFavoriteEpisodeThunk } from "components/redux/dataSlice";
+import { AddFavoriteButtonComponent } from "components/Buttons/AddFavoriteButton";
 export const Characters = () => {
     const [page, setPage] = useState(1);
     
     const  { characters, isLoading, error } = useSelector(state => state.api);
     
     const dispatch = useDispatch();
+
+    const value = 'character';
     useEffect(() => {
         dispatch(getCharactesThunk(page))
     },[dispatch, page])
@@ -32,17 +36,25 @@ export const Characters = () => {
 />}
             <StyledList>
                 {characters.map(({ id, name, image }) =>
-                    <StyledLink key={id} to={`/characters/${id}`} >
-                                        <StyledLi >
+                   
+                    <StyledLi key={id}>
+                         <StyledLink key={id} to={`/characters/${id}`} >
                                                 <p>{name}</p>
-                        <img src={image} alt={name} />
+                            <img src={image} alt={name} />
+                        </StyledLink>
+                        <AddFavoriteButtonComponent type='button' onClick={() => dispatch(getFavoriteEpisodeThunk({ value, id }))}/>
+                            {/* <button type='button' onClick={() => dispatch(getFavoriteEpisodeThunk({ value, id }))}>Add to favorite</button> */}
                                                </StyledLi>
-                         </StyledLink>
+                        
                     )}
             </StyledList>
             {!error && <ShowMoreBtn type='button' onClick={() => setPage(page + 1)}/>}
             <div className='suspense-div'>
-            <NavLink to="search-character">Search</NavLink>
+                <StyledLinksBlock>
+                    <StyledNavLink to="search-character">Search</StyledNavLink>
+                <StyledNavLink to="favorite-characters">Favorite</StyledNavLink>
+                </StyledLinksBlock>
+                
                  <Suspense fallback="isLoading">
                  <Outlet/>
                 </Suspense></div>
@@ -50,12 +62,3 @@ export const Characters = () => {
         </StyledMainDiv>
     )
 }
-
-    // useEffect(() => {
-    //     FetchCharacters(page).then(({ results, info }) => {
-    //         setCharacters(prevCharacters => page === 1 ? results : [...prevCharacters, ...results]);
-    //         if (page === info.pages) {
-    //              setLastPage(true)
-    //          }
-    //     })
-    // },[page])

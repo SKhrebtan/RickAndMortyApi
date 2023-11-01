@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 export const StyledLink = styled(Link)`
 width: calc((100% - 20px) / 2);
@@ -10,12 +10,37 @@ width: calc((100% - 20px) / 2);
    width: calc((100% - 80px) / 5)
 }
 `
+export const StyledLinksBlock = styled.div`
+margin: 0 auto;
+padding-top: 20px;
+display: flex;
+gap: 50px;
+justify-content: center;
+`
+export const StyledNavLink = styled(NavLink)`
+text-decoration: none;
+padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: yellow;
+  color: #2b2b2b;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+&.active{
+     background-color: #61de2a;
+}
+  &:hover {
+    background-color: #61de2a;
+  }
+`
 export const StyledMainDiv = styled.div`
 padding: 20px;
 .loader {
-    display: flex;
-    justify-content:center;
-  margin: 30px auto;
+   position: absolute;
+ top: 75px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .suspense-div{
     display: flex;

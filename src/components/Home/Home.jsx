@@ -4,12 +4,14 @@ import { StyledList,MainDiv } from "./Home.styled";
 import { getEpisodesThunk, getFavoriteEpisodeThunk } from "components/redux/dataSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { CirclesWithBar } from 'react-loader-spinner';
-import { ShowMoreBtn } from "components/ShowMoreBtn/ShowMoreBtn";
+import { ShowMoreBtn } from "components/Buttons/ShowMoreBtn";
+import { AddFavoriteButtonComponent } from "components/Buttons/AddFavoriteButton";
 
 export const Home = () => {
     const [page, setPage] = useState(1);
     const {episodes, error, isLoading, showBtn} = useSelector(state=>state.api);
     const dispatch = useDispatch();
+    const value = 'episode';
     useEffect(() => {
         dispatch(getEpisodesThunk(page))
     },[dispatch, page])
@@ -35,7 +37,8 @@ export const Home = () => {
                         <p>{name}</p>
                         <p>{episode}</p>
                         <p>{air_date}</p>
-                        <button type='button' onClick={()=>dispatch(getFavoriteEpisodeThunk(id))}>Add to favorite</button>
+                        <AddFavoriteButtonComponent type='button' onClick={()=>dispatch(getFavoriteEpisodeThunk({value,id}))}/>
+                        {/* <button type='button' onClick={()=>dispatch(getFavoriteEpisodeThunk({value,id}))}>Add to favorite</button> */}
                     </li>)}
             </StyledList>
             {showBtn && !error && <ShowMoreBtn type='button' onClick={() => setPage(page + 1)}/>}

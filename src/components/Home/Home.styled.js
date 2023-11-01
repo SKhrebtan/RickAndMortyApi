@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 export const MainDiv = styled.div`
 .loader {
-    display: flex;
-    justify-content:center;
-  margin: 30px auto;
+   position: absolute;
+ top: 75px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 `
 export const StyledList = styled.ol`

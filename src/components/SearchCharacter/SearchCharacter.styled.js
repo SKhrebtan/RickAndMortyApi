@@ -48,6 +48,7 @@ background-color: crimson;
 color: white;
 letter-spacing: 2px;
 font-size: 18px;
+margin-right: 10px;
 transition: all 300ms linear;
 &:hover {
     background-color: #61de2a;
@@ -85,6 +86,21 @@ color: black;
     width: 100%;
 }
 
+`
+export const StyledShowButton = styled.button`
+text-decoration: none;
+padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: yellow;
+  color: #2b2b2b;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #61de2a;
+  }
 `
 
 export const StyledList = styled.ul`

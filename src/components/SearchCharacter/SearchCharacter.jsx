@@ -1,92 +1,120 @@
-import { useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { StyledMainDiv,StyledList,StyledLink } from "./SearchCharacter.styled";
-import { getSearchCharacterThunk } from "components/redux/dataSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import {
+  StyledMainDiv,
+  StyledList,
+  StyledLink,
+  StyledShowButton
+} from './SearchCharacter.styled';
+import { getSearchCharacterThunk } from 'components/redux/dataSlice';
+import { useSelector, useDispatch } from 'react-redux';
 import { CirclesWithBar } from 'react-loader-spinner';
 import { FcSearch } from 'react-icons/fc';
-import { ShowMoreBtn } from "components/ShowMoreBtn/ShowMoreBtn";
-import { clearCharacters } from "components/redux/dataSlice";
+import { ShowMoreBtn } from 'components/Buttons/ShowMoreBtn';
+import { clearCharacters } from 'components/redux/dataSlice';
+import { getFavoriteEpisodeThunk } from 'components/redux/dataSlice';
+import { StyledLi } from 'components/Characters/Characters.styled';
+import { deleteFavoriteEpisode } from 'components/redux/dataSlice';
+import { DeleteButtonComponent } from 'components/Buttons/DeleteButton';
+import { AddFavoriteButtonComponent } from "components/Buttons/AddFavoriteButton";
 export const SearchCharacter = () => {
-    
-    const [searchParams, setSearchParams] = useSearchParams();
-    const [page, setPage] = useState(1);
-     const query = searchParams.get('query');
-     const { searchCharacters, error, isLoading, showBtn } = useSelector(state => state.api);
-    //  const currentPage = searchParams.get('page');
 
-       const dispatch = useDispatch();
-    const handleSubmit = e => {
-        e.preventDefault();
-        setSearchParams({
-            query: e.currentTarget.elements.searchValue.value,
-            page
-        });
-        setPage(1);
-        // dispatch(addLocation({page:1, query: e.currentTarget.elements.searchValue.value}))
-        
-        e.target.reset();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [page, setPage] = useState(1);
+  const [showFavorite, setShowFavorite] = useState(false);
+  const query = searchParams.get('query');
+  const { searchCharacters, error, isLoading, showBtn,favoriteCharacters } = useSelector(
+    state => state.api
+  );
+  const value = 'character';
+
+  const dispatch = useDispatch();
+  const handleSubmit = e => {
+    e.preventDefault();
+    setSearchParams({
+      query: e.currentTarget.elements.searchValue.value,
+      page,
+    });
+    setPage(1);
+
+    e.target.reset();
+  };
+
+  useEffect(() => {
+    if (!query) {
+      dispatch(clearCharacters());
+      return;
     }
-//     useEffect(() => {
-//         if (characterSearchParams) {
-            
-//             const { query, page } = characterSearchParams;
-//              setSearchParams({
-//             query,
-//             page,
-//         });
-//         }
-// },[characterSearchParams, setSearchParams])
-    useEffect(() => {
-        if (!query) {
-           
-            dispatch(clearCharacters())
-            return;}
-                     dispatch(getSearchCharacterThunk({ page, query }))
-                       
-    },[ dispatch, page, query])
-    return (
-        <StyledMainDiv>
-            <h3>Search character</h3>
-             <form className='form' onSubmit={handleSubmit}>
-            <label className='label'>
-                <input className='input' type='text' name='searchValue'/>
-            </label>
-                <button className='submit-btn' type="submit">Search <FcSearch size={20} /></button>
-            </form>
-                       {isLoading && <CirclesWithBar
-  height="100"
-  width="100"
-  color="#4fa94d"
-  wrapperStyle={{}}
-  wrapperClass="loader"
-  visible={true}
-  outerCircleColor=""
-  innerCircleColor=""
-  barColor=""
-  ariaLabel='circles-with-bar-loading'
-            />}
-            {error && <h3>Bad value request</h3>}
-            {searchCharacters && !error && <StyledList>
-                {searchCharacters.map(({ id, name, image }) =>
-                    <StyledLink key={id} to={`/characters/${id}/`}>
-                      <li key={id}>
+    dispatch(getSearchCharacterThunk({ page, query }));
+  }, [dispatch, page, query]);
+  return (
+    <StyledMainDiv>
+      <h3>Search character</h3>
+      <form className="form" onSubmit={handleSubmit}>
+        <label className="label">
+          <input className="input" type="text" name="searchValue" />
+        </label>
+        <button className="submit-btn" type="submit" onClick={()=>setShowFavorite(true)}>
+                    Search <FcSearch size={20} />
+        </button>
+        <StyledShowButton type='button' onClick={() =>setShowFavorite(!showFavorite)}>{showFavorite ? 'show Favorites' : 'hide Favorite'}</StyledShowButton>
+      </form>
+      {isLoading && (
+        <CirclesWithBar
+          height="100"
+          width="100"
+          color="#4fa94d"
+          wrapperStyle={{}}
+          wrapperClass="loader"
+          visible={true}
+          outerCircleColor=""
+          innerCircleColor=""
+          barColor=""
+          ariaLabel="circles-with-bar-loading"
+        />
+      )}
+      {error && <h3>Bad value request</h3>}
+      {searchCharacters && !error && (
+        <StyledList>
+          {showFavorite ? searchCharacters.map(({ id, name, image }) => (
+              <li key={id}>
+                <StyledLink key={id} to={`/characters/${id}/`}>
+                  <p>{name}</p>
+                  <img className="image" src={image} alt={name} />
+              </StyledLink>
+              <AddFavoriteButtonComponent    type="button"
+                  onClick={() => dispatch(getFavoriteEpisodeThunk({ value, id }))}/>
+                {/* <button
+                  type="button"
+                  onClick={() => dispatch(getFavoriteEpisodeThunk({ value, id }))}
+                >
+                  Add to favorite
+                </button> */}
+              </li>
+            ))
+          : favoriteCharacters.length > 0 && favoriteCharacters.map(({ id, name, image }) =>
+                    
+                                        <StyledLi key={id}>
+                        <StyledLink key={id} to={`/characters/${id}`} >
                                                 <p>{name}</p>
-                            <img className='image' src={image} alt={name} />
-                                                    </li>
-                        </StyledLink>
-             
+                        <img src={image} alt={name} />
+              </StyledLink>
+              <DeleteButtonComponent type='button' onClick={() => dispatch(deleteFavoriteEpisode({ value, id }))}/>
+                         {/* <button type='button' onClick={() => dispatch(deleteFavoriteEpisode({ value, id }))}>Delete</button> */}
+                        </StyledLi>
+                       
+                         
                     )}
-            </StyledList>}
-            {/* {showBtn && !error && <button className='more-btn' type='button' onClick={() => {
-                dispatch(addLocation({page: page + 1, query}))
-                setPage(page + 1)
-                }}>Load more</button>} */}
-            {showBtn && searchCharacters.length > 1 && !error &&<ShowMoreBtn type='button' onClick={() => {
-                // dispatch(addLocation({page: Number(currentPage) + 1, query}))
-                setPage(page + 1)
-                }} />}
-        </StyledMainDiv>
-       
-    )
-}
+        </StyledList>
+      )}
+      {showFavorite && showBtn && searchCharacters.length > 1 && !error && (
+        <ShowMoreBtn
+          type="button"
+          onClick={() => {
+            setPage(page + 1);
+          }}
+        />
+      )}
+    </StyledMainDiv>
+  );
+};

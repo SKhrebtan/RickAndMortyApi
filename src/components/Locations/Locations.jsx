@@ -3,11 +3,14 @@ import { StyledList, StyledLink,MainDiv } from "./Locations.styled";
 import { getLocationsThunk } from "components/redux/dataSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { CirclesWithBar } from 'react-loader-spinner';
-import { ShowMoreBtn } from "components/ShowMoreBtn/ShowMoreBtn";
+import { ShowMoreBtn } from "components/Buttons/ShowMoreBtn";
+import { getFavoriteEpisodeThunk } from "components/redux/dataSlice";
+import { AddFavoriteButtonComponent } from "components/Buttons/AddFavoriteButton";
 export const Locations = () => {
     const [page, setPage] = useState(1);
     const {locations, error, isLoading, showBtn} = useSelector(state=>state.api);
     const dispatch = useDispatch();
+    const value = 'location';
     useEffect(() => {
         dispatch(getLocationsThunk(page))
     },[dispatch, page])
@@ -35,7 +38,9 @@ export const Locations = () => {
                         <p>Name: {name}</p>
                             <p>Type: {type}</p>
                             <p>Dimension: {dimension}</p>
-                            </StyledLink>
+                        </StyledLink>
+                        <AddFavoriteButtonComponent type='button' onClick={()=>dispatch(getFavoriteEpisodeThunk({value,id}))}/>
+                        {/* <button type='button' onClick={()=>dispatch(getFavoriteEpisodeThunk({value,id}))}>Add to favorite</button> */}
                     </li>
                     )}
             </StyledList>

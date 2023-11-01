@@ -8,7 +8,7 @@ axios.defaults.baseURL = 'https://rickandmortyapi.com/api';
 const persistConfig = {
   key: 'api',
   storage,
-  whitelist: ['favoriteEpisodes']
+  whitelist: ['favoriteEpisodes','favoriteLocations','favoriteCharacters']
 }
 
 export const getCharactesThunk = createAsyncThunk(
@@ -68,11 +68,11 @@ export const getSearchCharacterThunk = createAsyncThunk(
 
 export const getFavoriteEpisodeThunk = createAsyncThunk(
      'favorie/favoriteEpisode',
-  async (id, thunkAPI) => {
+  async ({ value, id }, thunkAPI) => {
       
         try {
-            const { data } = await axios.get(`/episode/${id}`);
-             return data 
+            const { data } = await axios.get(`/${value}/${id}`);
+          return { data , value}
 
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -86,6 +86,8 @@ export const getFavoriteEpisodeThunk = createAsyncThunk(
        characters: [],
        episodes: [],
        favoriteEpisodes: [],
+       favoriteLocations: [],
+       favoriteCharacters: [],
        locations: [],
        searchCharacters: [],
        characterSearchParams: null,
@@ -102,9 +104,28 @@ export const getFavoriteEpisodeThunk = createAsyncThunk(
        
             state.searchCharacters = []
      },
-     deleteFavoriteEpisode(state, action) {
+     deleteFavoriteEpisode(state, { payload: { value, id } }) {
+           switch (value) {
+           case 'episode':
+             state.favoriteEpisodes = state.favoriteEpisodes.filter(item => {
+        return item.id !== id
+       })
+             break;
+           case 'location':
+             state.favoriteLocations = state.favoriteLocations.filter(item => {
+        return item.id !== id
+       })
+             break;
+           case 'character':
+             state.favoriteCharacters = state.favoriteCharacters.filter(item => {
+        return item.id !== id
+       })
+             break;
+          default:
+      state = state=>state;
+  }
         state.favoriteEpisodes = state.favoriteEpisodes.filter(item => {
-        return item.id !== action.payload
+        return item.id !== id
        })
      }
     
@@ -188,9 +209,23 @@ export const getFavoriteEpisodeThunk = createAsyncThunk(
             state.isLoading = true;
     state.error = null;
      })
-       .addCase(getFavoriteEpisodeThunk.fulfilled, (state, { payload}) => {
-                state.isLoading = false;
-        state.favoriteEpisodes.push(payload)
+       .addCase(getFavoriteEpisodeThunk.fulfilled, (state, {payload:{data, value}}) => {
+         state.isLoading = false;
+         
+         switch (value) {
+           case 'episode':
+             state.favoriteEpisodes = [...state.favoriteEpisodes, data];
+             break;
+           case 'location':
+             state.favoriteLocations.push(data);
+             break;
+           case 'character':
+             state.favoriteCharacters.push(data);
+             break;
+          default:
+      state = state=>state;
+  }
+        
          
        })
    .addCase(getFavoriteEpisodeThunk.rejected, (state, action) => {
