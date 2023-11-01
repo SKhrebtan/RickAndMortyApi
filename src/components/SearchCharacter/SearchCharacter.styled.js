@@ -5,9 +5,17 @@ export const StyledMainDiv = styled.div`
 display: flex;
 flex-direction: column;
 align-items: center;
-
+.name {
+  text-align: center;
+}
 .form {
     display: flex;
+flex-direction: column;
+align-items: center;
+gap: 15px;
+    @media screen and (min-width: 768px) {
+      flex-direction: row;
+    }
 }
 .label {
 
@@ -109,7 +117,19 @@ display: flex;
 flex-wrap: wrap;
 gap: 20px;
 padding-left: 20px;
-
+.liwka{
+  display:flex;
+  flex-direction: column;
+  gap: 15px;
+  width: calc((100% - 40px) / 2);
+text-decoration: none;
+@media screen and (min-width: 768px) {
+    width: calc((100% - 40px) / 3);
+}
+@media screen and (min-width: 1368px) {
+    width: calc((100% - 60px) / 4);
+}
+}
 @media screen and (min-width: 768px) {
     padding-left: 40px;
     padding-right: 40px;
@@ -117,12 +137,9 @@ padding-left: 20px;
 `
 
 export const StyledLink = styled(Link)`
-width: calc((100% - 40px) / 2);
 text-decoration: none;
-@media screen and (min-width: 768px) {
-    width: calc((100% - 40px) / 3);
-}
-@media screen and (min-width: 1368px) {
-    width: calc((100% - 60px) / 4);
+width: 100%;
+.image {
+    width: 100%;
 }
 `

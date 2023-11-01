@@ -2,12 +2,11 @@ import styled from 'styled-components';
 import { Link, NavLink } from 'react-router-dom';
 
 export const StyledLink = styled(Link)`
-width: calc((100% - 20px) / 2);
-@media screen and (min-width: 768px){
-    width: calc((100% - 40px) / 3)
+text-decoration: none;
+width: 100%;
+.image{
+  width: 100%;
 }
-@media screen and (min-width: 1368px){
-   width: calc((100% - 80px) / 5)
 }
 `
 export const StyledLinksBlock = styled.div`
@@ -66,5 +65,20 @@ gap: 20px;
 `
 
 export const StyledLi = styled.li`
-;
+display: flex;
+flex-direction: column;
+gap:20px;
+align-items: center;
+width: calc((100% - 20px) / 2);
+@media screen and (min-width: 768px){
+    width: calc((100% - 40px) / 3)
+}
+@media screen and (min-width: 1368px){
+   width: calc((100% - 80px) / 5)
+`
+
+export const StyledName = styled.p`
+font-size:18px;
+color: black;
+text-align: center;
 `

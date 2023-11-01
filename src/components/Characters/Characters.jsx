@@ -1,6 +1,6 @@
 import { useState, useEffect,Suspense } from "react";
 import { Outlet } from "react-router-dom";
-import { StyledList, StyledLi, StyledMainDiv,StyledLink,StyledNavLink,StyledLinksBlock } from "./Characters.styled";
+import { StyledList, StyledLi, StyledMainDiv,StyledLink,StyledNavLink,StyledLinksBlock,StyledName } from "./Characters.styled";
 import { getCharactesThunk } from "components/redux/dataSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { CirclesWithBar } from 'react-loader-spinner';
@@ -39,8 +39,8 @@ export const Characters = () => {
                    
                     <StyledLi key={id}>
                          <StyledLink key={id} to={`/characters/${id}`} >
-                                                <p>{name}</p>
-                            <img src={image} alt={name} />
+                                                <StyledName>{name}</StyledName>
+                            <img className='image' src={image} alt={name} />
                         </StyledLink>
                         <AddFavoriteButtonComponent type='button' onClick={() => dispatch(getFavoriteEpisodeThunk({ value, id }))}/>
                             {/* <button type='button' onClick={() => dispatch(getFavoriteEpisodeThunk({ value, id }))}>Add to favorite</button> */}

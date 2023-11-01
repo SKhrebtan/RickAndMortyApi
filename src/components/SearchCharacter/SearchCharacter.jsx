@@ -77,9 +77,9 @@ export const SearchCharacter = () => {
       {searchCharacters && !error && (
         <StyledList>
           {showFavorite ? searchCharacters.map(({ id, name, image }) => (
-              <li key={id}>
+              <li className='liwka' key={id}>
                 <StyledLink key={id} to={`/characters/${id}/`}>
-                  <p>{name}</p>
+                  <p className='name'>{name}</p>
                   <img className="image" src={image} alt={name} />
               </StyledLink>
               <AddFavoriteButtonComponent    type="button"
@@ -96,8 +96,8 @@ export const SearchCharacter = () => {
                     
                                         <StyledLi key={id}>
                         <StyledLink key={id} to={`/characters/${id}`} >
-                                                <p>{name}</p>
-                        <img src={image} alt={name} />
+                                                <p className='name'>{name}</p>
+                        <img className='image' src={image} alt={name} />
               </StyledLink>
               <DeleteButtonComponent type='button' onClick={() => dispatch(deleteFavoriteEpisode({ value, id }))}/>
                          {/* <button type='button' onClick={() => dispatch(deleteFavoriteEpisode({ value, id }))}>Delete</button> */}

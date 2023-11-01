@@ -9,7 +9,7 @@ export const AddFavoriteButton = styled.button`
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-
+  
   &:hover {
     background-color: #219653;
   }
