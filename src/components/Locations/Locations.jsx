@@ -13,7 +13,7 @@ export const Locations = () => {
     },[dispatch, page])
     return (
         <MainDiv>
-            <h2>Locations</h2>
+            
               {error && <h3>Something went wrong!</h3>}
             {isLoading && <CirclesWithBar
   height="100"

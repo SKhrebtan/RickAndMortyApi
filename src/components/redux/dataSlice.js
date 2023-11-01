@@ -1,8 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
 axios.defaults.baseURL = 'https://rickandmortyapi.com/api';
 
+const persistConfig = {
+  key: 'api',
+  storage,
+  whitelist: ['favoriteEpisodes']
+}
 
 export const getCharactesThunk = createAsyncThunk(
      'characters/getCharacters',
@@ -59,11 +66,26 @@ export const getSearchCharacterThunk = createAsyncThunk(
   }
 )
 
+export const getFavoriteEpisodeThunk = createAsyncThunk(
+     'favorie/favoriteEpisode',
+  async (id, thunkAPI) => {
+      
+        try {
+            const { data } = await axios.get(`/episode/${id}`);
+             return data 
+
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+)
+
  export const charactersSlice = createSlice({
     name: 'api',
      initialState: {
        characters: [],
        episodes: [],
+       favoriteEpisodes: [],
        locations: [],
        searchCharacters: [],
        characterSearchParams: null,
@@ -80,6 +102,12 @@ export const getSearchCharacterThunk = createAsyncThunk(
        
             state.searchCharacters = []
      },
+     deleteFavoriteEpisode(state, action) {
+        state.favoriteEpisodes = state.favoriteEpisodes.filter(item => {
+        return item.id !== action.payload
+       })
+     }
+    
      },
    extraReducers: builder =>
      builder.addCase(getCharactesThunk.pending, state => {
@@ -155,10 +183,23 @@ export const getSearchCharacterThunk = createAsyncThunk(
    .addCase(getSearchCharacterThunk.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
+   })
+   .addCase(getFavoriteEpisodeThunk.pending, state => {
+            state.isLoading = true;
+    state.error = null;
+     })
+       .addCase(getFavoriteEpisodeThunk.fulfilled, (state, { payload}) => {
+                state.isLoading = false;
+        state.favoriteEpisodes.push(payload)
+         
+       })
+   .addCase(getFavoriteEpisodeThunk.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
      })
  })
-
-export const { addLocation, clearCharacters } = charactersSlice.actions;
+export const persistedReducer = persistReducer(persistConfig, charactersSlice.reducer)
+export const { addLocation, clearCharacters,deleteFavoriteEpisode } = charactersSlice.actions;
 
   // extraReducers: {
   //   [getCharactesThunk.pending](state) {
