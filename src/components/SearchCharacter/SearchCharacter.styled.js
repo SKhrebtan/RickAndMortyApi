@@ -5,6 +5,8 @@ export const StyledMainDiv = styled.div`
 display: flex;
 flex-direction: column;
 align-items: center;
+padding-left: 40px;
+padding-right: 40px;
 .name {
   text-align: center;
   margin:0;
@@ -132,6 +134,7 @@ display: flex;
 flex-wrap: wrap;
 gap: 20px;
 padding-left: 20px;
+width:100%;
 .liwka{
   display:flex;
   flex-direction: column;

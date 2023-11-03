@@ -10,14 +10,21 @@ import { AddFavoriteButtonComponent } from "components/Buttons/AddFavoriteButton
 export const Characters = () => {
     const [page, setPage] = useState(1);
     
-    const  { characters, isLoading, error } = useSelector(state => state.api);
+    const  { characters, isLoading, error,favoriteCharacters } = useSelector(state => state.api);
     
     const dispatch = useDispatch();
 
     const value = 'character';
     useEffect(() => {
         dispatch(getCharactesThunk(page))
-    },[dispatch, page])
+    }, [dispatch, page])
+    
+    const handleFavorite = id => {
+        if (favoriteCharacters.find(item => item.id === id)) {
+            return alert('such character is already favorite')
+        }
+dispatch(getFavoriteEpisodeThunk({ value, id }))
+    }
     return (
         <StyledMainDiv>
             <h2>Characters</h2>
@@ -42,7 +49,7 @@ export const Characters = () => {
                                                 <StyledName>{name}</StyledName>
                             <img className='image' src={image} alt={name} />
                         </StyledLink>
-                        <AddFavoriteButtonComponent type='button' onClick={() => dispatch(getFavoriteEpisodeThunk({ value, id }))}/>
+                        <AddFavoriteButtonComponent  type='button' onClick={() => handleFavorite(id)}/>
                             {/* <button type='button' onClick={() => dispatch(getFavoriteEpisodeThunk({ value, id }))}>Add to favorite</button> */}
                                                </StyledLi>
                         

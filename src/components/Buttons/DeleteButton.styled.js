@@ -11,7 +11,12 @@ padding: 8px 16px;
   transition: background-color 0.3s ease;
   display:block;
   margin: 0 auto;
-  width: 150px;
+width: 100px;
+  @media screen and (min-width:480px){
+     width: 150px;
+  }
+ 
+  
 
   &:hover {
     background-color: #c0392b;

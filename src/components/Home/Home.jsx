@@ -9,12 +9,18 @@ import { AddFavoriteButtonComponent } from "components/Buttons/AddFavoriteButton
 
 export const Home = () => {
     const [page, setPage] = useState(1);
-    const {episodes, error, isLoading, showBtn} = useSelector(state=>state.api);
+    const {episodes, error, isLoading, showBtn,favoriteEpisodes} = useSelector(state=>state.api);
     const dispatch = useDispatch();
     const value = 'episode';
     useEffect(() => {
         dispatch(getEpisodesThunk(page))
-    },[dispatch, page])
+    }, [dispatch, page])
+       const handleFavorite = id => {
+        if (favoriteEpisodes.find(item => item.id === id)) {
+            return alert('such episode is already favorite')
+        }
+dispatch(getFavoriteEpisodeThunk({ value, id }))
+    }
     return (
         <MainDiv>
             
@@ -37,7 +43,7 @@ export const Home = () => {
                         <p>{name}</p>
                         <p>{episode}</p>
                         <p>{air_date}</p>
-                        <AddFavoriteButtonComponent type='button' onClick={()=>dispatch(getFavoriteEpisodeThunk({value,id}))}/>
+                        <AddFavoriteButtonComponent type='button' onClick={()=>handleFavorite(id)}/>
                         {/* <button type='button' onClick={()=>dispatch(getFavoriteEpisodeThunk({value,id}))}>Add to favorite</button> */}
                     </li>)}
             </StyledList>

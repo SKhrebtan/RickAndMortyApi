@@ -66,6 +66,7 @@ padding: 0;
 display: flex;
 flex-wrap: wrap;
 gap: 20px;
+width: 100%;
 `
 
 export const StyledLi = styled.li`

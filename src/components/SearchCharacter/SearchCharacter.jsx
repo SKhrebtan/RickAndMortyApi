@@ -31,6 +31,10 @@ export const SearchCharacter = () => {
   const dispatch = useDispatch();
   const handleSubmit = e => {
     e.preventDefault();
+    if (!e.currentTarget.elements.searchValue.value) {
+      return alert('need some value')
+    }
+    setShowFavorite(true)
     setSearchParams({
       query: e.currentTarget.elements.searchValue.value,
       page,
@@ -54,7 +58,7 @@ export const SearchCharacter = () => {
         <label className="label">
           <input className="input" type="text" name="searchValue" />
         </label>
-        <button className="submit-btn" type="submit" onClick={()=>setShowFavorite(true)}>
+        <button className="submit-btn" type="submit">
                     Search <FcSearch size={20} />
         </button>
         <StyledShowButton type='button' onClick={() =>setShowFavorite(!showFavorite)}>{showFavorite ? 'show Favorites' : 'hide Favorite'}</StyledShowButton>
